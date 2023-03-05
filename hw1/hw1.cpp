@@ -134,6 +134,16 @@ information min_priority_queue::delete_first()
     return t;
 }
 
+bool min_priority_queue::is_full()
+{
+    return (queue_length == MAX_HEAP_SIZE - 1);
+}
+
+bool min_priority_queue::is_empty()
+{
+    return (queue_length == 0);
+}
+
 class utils
 {
     string id_validation_check(string id);
@@ -256,5 +266,44 @@ information utils::register_form()
 
 int main()
 {
+    min_priority_queue queue;
+    bool keep = true;
+    char menu;
+    utils util;
+    do
+    {
+        information temp();
+        util.print_menu();
+        cin >> menu;
+
+        switch (menu)
+        {
+        case 'I':
+            cout << "I" << endl;
+            queue.insert(util.register_form());
+            break;
+
+        case 'D':
+            cout << "D" << endl;
+            break;
+            
+        case 'C':
+            cout << "C" << endl;
+            break;
+
+        case 'P':
+            cout << "P" << endl;
+            break;
+        case 'Q':
+            cout << "Q" << endl;
+            break;
+        default:
+            cout << "Wrong Input!" << endl;
+            break;
+        }
+    } while (keep);
+    
+    cout << "Thank you. Bye!" << endl;
+
     return 0;
 }
