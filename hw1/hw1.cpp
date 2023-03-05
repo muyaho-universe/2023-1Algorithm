@@ -13,16 +13,21 @@ public:
     string name;
     string id;      // id data type is string, not integer, to handle non-ineger inputs
     string school;
-    void set_data(string n, string i, string s);
+    information(string n, string i, string s);
+    void set_id(string i);
 };
 
-void information::set_data(string n, string i, string s)
+information::information(string n, string i, string s)
 {
     name = n;
     id = i;
     school = s;
 }
 
+void information::set_id(string i)
+{
+    id = i;
+}
 class utils
 {
     string id_validation_check(string id);
@@ -133,8 +138,7 @@ void utils::register_form()
     cout << "Enter school of element: ";
     cin >> school;
 
-    information info;
-    info.set_data(name, id, school);
+    information info(name, id, school);
 
 }
 
