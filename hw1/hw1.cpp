@@ -9,12 +9,18 @@ using namespace std;
 //define class for elements.
 class information
 {
-public:
     string name;
     string id;      // id data type is string, not integer, to handle non-ineger inputs
     string school;
+public:
+    information();
     information(string n, string i, string s);
+    void set_name(string n);
     void set_id(string i);
+    void set_school(string s);
+    string get_name();
+    string get_id();
+    string get_school();
 };
 
 information::information(string n, string i, string s)
@@ -24,21 +30,67 @@ information::information(string n, string i, string s)
     school = s;
 }
 
+information::information()
+{
+    name = " ";
+    id = " ";
+    school = " ";
+}
+
+void information::set_name(string n)
+{
+    name = n;
+}
+
 void information::set_id(string i)
 {
     id = i;
 }
+
+void information::set_school(string s)
+{
+    school = s;
+}
+
+string information::get_name()
+{
+    return name;
+}
+
+string information::get_id()
+{
+    return id;
+}
+
+string information::get_school()
+{
+    return school;
+}
+
+class min_priority_queue
+{
+    information q[MAX_HEAP_SIZE];
+    int queue_length;
+    void adjust(int t_root);
+public :
+    min_priority_queue();
+    int get_queue_length();
+    void insert();
+    information delete_first();
+    bool is_full();
+};
+
 class utils
 {
     string id_validation_check(string id);
 public:
     void print_menu();
-    void register_form();
+    information register_form();
 };
 
 void utils::print_menu()
 {
-    cout << "*********** MENU ***********" << endl;
+    cout << "\n*********** MENU ***********" << endl;
     cout << "I : Isert new element into queue." << endl;
     cout << "D : Delete element with smallest key from queue." << endl;
     cout << "C : Decrease key of element in queue." << endl;
@@ -89,7 +141,7 @@ string utils::id_validation_check(string id)
     }   
 }
 
-void utils::register_form()
+information utils::register_form()
 {
     string name;
     string id;
@@ -138,8 +190,11 @@ void utils::register_form()
     cout << "Enter school of element: ";
     cin >> school;
 
-    information info(name, id, school);
+    information info(name, id, school);     // define new information instance
 
+    cout << "New element [" + info.get_name() + ", " + info.get_id() + ", " + info.get_school() + "] is inserted." << endl;
+
+    return info;
 }
 
 
