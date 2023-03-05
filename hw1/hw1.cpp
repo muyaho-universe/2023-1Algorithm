@@ -188,10 +188,6 @@ string utils::id_validation_check(string id)
             {
                 temp += '0';
             }
-            if (temp.length() >= 5)
-            {
-                break;
-            }
         }
 
         if(temp.length() == 4 && temp[0] != '0')
@@ -228,7 +224,7 @@ information utils::register_form()
         else
         {
             string go_nogo;
-            cout << "Are you sure to use id: " << temp << "?(Y/n) ";
+            cout << "Are you sure to use id: " << temp << "? (Y/n) ";
             cin >> go_nogo;
             do
             {
@@ -254,7 +250,7 @@ information utils::register_form()
     cout << "Enter school of element: ";
     cin >> school;
 
-    information info(name, id, school);     // define new information instance
+    information info(name, temp, school);     // define new information instance
 
     cout << "New element [" + info.get_name() + ", " + info.get_id() + ", " + info.get_school() + "] is inserted." << endl;
 
