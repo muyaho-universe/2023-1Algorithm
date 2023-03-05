@@ -75,10 +75,64 @@ class min_priority_queue
 public :
     min_priority_queue();
     int get_queue_length();
-    void insert();
+    void insert(information info);
     information delete_first();
     bool is_full();
+    bool is_empty();
 };
+
+min_priority_queue::min_priority_queue()
+{
+    queue_length = 0;
+}
+
+int min_priority_queue::get_queue_length()
+{
+    return queue_length;
+}
+
+void min_priority_queue::insert(information info)   // applying heap concept here
+{
+    int i;
+    queue_length++;
+    i = queue_length;
+
+    while ((i != 1) && (stoi(info.get_id()) < stoi(q[i / 2].get_id())))
+    {
+        q[i] = q[i / 2];
+        i /= 2;
+    }
+    q[i] = info;
+}
+
+information min_priority_queue::delete_first()
+{
+    information t;
+    information tmp;
+    int parent, child;
+    t = q[1];           // for return value
+    tmp = q[queue_length]; // last element
+    queue_length--;
+    parent = 1;         // root
+    child = 2;          // left child of root
+
+    while(child <= queue_length)
+    {
+        if ((child < queue_length) && (stoi(q[child].get_id()) > stoi(q[child + 1].get_id())))
+        {
+            child++;    // choose right child
+        }
+        if (stoi(tmp.get_id()) <= stoi(q[child].get_id()))
+        {
+            break;
+        }
+        q[parent] = q[child];
+        parent = child;
+        child *= 2;
+    }
+    q[parent] = tmp;
+    return t;
+}
 
 class utils
 {
