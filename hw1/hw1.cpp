@@ -52,7 +52,7 @@ string utils::id_validation_check(string id)
     regex reg("\\d{4}");        // declare regular expression to check wheter id is four length integer number
     if (regex_match(id, reg))
     {
-        return "1";               // if it is, return type 1;
+        return id;               // if it is, return type 1;
     }
     else
     {
@@ -89,12 +89,46 @@ void utils::register_form()
     string name;
     string id;
     string school;
+    string temp;
+    bool id_checker = true;
 
     cout << "Enter name of element: ";
     cin >> name;
-    cout << "Enter id of element: ";
-    cin >> id;
-    //if id format is invalid, it will be checked with the user
+    while (id_checker)      // this while loop checks wheter id is valid. it gives users the chance to check the input id is what they intended
+    {
+        cout << "Enter id of element: ";
+        cin >> id;
+        //if id format is invalid, it will be checked with the user
+        temp = id_validation_check(id);
+        if (temp == "-1")
+        {
+            cout << "Wrong id format. Enter id again!" << endl;
+        }
+        else
+        {
+            string go_nogo;
+            cout << "Are you sure to use id: " << temp << "?(Y/n) ";
+            cin >> go_nogo;
+            do
+            {
+                if(go_nogo == "Y" || go_nogo == "y")
+                {
+                    id_checker = false;
+                    break;
+                }
+                if(go_nogo == "N" || go_nogo == "n")
+                {
+                    break;
+                }
+                else
+                {
+                    cout << "Type wheter use it or not (Y/n): ";
+                    cin >> go_nogo;
+                }
+            } while (true);
+        }
+        
+    }
     
     cout << "Enter school of element: ";
     cin >> school;
