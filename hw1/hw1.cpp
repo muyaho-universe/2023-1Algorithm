@@ -76,6 +76,7 @@ public :
     min_priority_queue();
     int get_queue_length();
     void insert(information info);
+    void print_queue();
     information delete_first();
     bool is_full();
     bool is_empty();
@@ -103,6 +104,15 @@ void min_priority_queue::insert(information info)   // applying heap concept her
         i /= 2;
     }
     q[i] = info;
+}
+
+void min_priority_queue::print_queue()
+{
+    for(int i = 1; i < queue_length + 1; i++)
+    {
+        cout << "["+ q[i].get_name() +", "+ q[i].get_id() + ", "+ q[i].get_school() +"] ";
+    }
+    cout << endl;
 }
 
 information min_priority_queue::delete_first()
@@ -180,7 +190,7 @@ string utils::id_validation_check(string id)
         string temp = "";
         for (int i = 0; i < id.length(); i++)
         {
-            if (48 < id[i] && id[i] < 58)
+            if (47 < id[i] && id[i] < 58)
             {
                 temp += id[i];                  // store all the number characters in temp
             }
@@ -238,6 +248,7 @@ information utils::register_form()
                 }
                 if(go_nogo == "N" || go_nogo == "n")
                 {
+                    cin.ignore();
                     break;
                 }
                 else
@@ -291,10 +302,11 @@ int main()
             break;
 
         case 'P':
-            cout << "P" << endl;
+            queue.print_queue();
             break;
         case 'Q':
             cout << "Q" << endl;
+            keep = false;
             break;
         default:
             cout << "Wrong Input!" << endl;
