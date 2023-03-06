@@ -211,10 +211,12 @@ information utils::register_form()
 
     cout << "Enter name of element: ";
     cin >> name;
+    cin.ignore();
     while (id_checker)      // this while loop checks wheter id is valid. it gives users the chance to check the input id is what they intended
     {
         cout << "Enter id of element: ";
-        cin >> id;
+        getline(cin, id);   // to allow users using id with the space
+
         //if id format is invalid, it will be checked with the user
         temp = id_validation_check(id);
         if (temp == "-1")
@@ -265,18 +267,18 @@ int main()
 {
     min_priority_queue queue;
     bool keep = true;
-    char menu;
+    string menu;
     utils util;
     do
     {
         information temp();
         util.print_menu();
         cin >> menu;
+        cin.clear();
 
-        switch (menu)
+        switch (menu[0])
         {
         case 'I':
-            cout << "I" << endl;
             queue.insert(util.register_form());
             break;
 
