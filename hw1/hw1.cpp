@@ -170,7 +170,7 @@ string utils::id_validation_check(string id)
         return "-1";              // id length is less than 4. don't need to check the rest
     }
     
-    regex reg("\\d{4}");        // declare regular expression to check wheter id is four length integer number
+    regex reg("[1-9]{1}\\d{4}");        // declare regular expression to check wheter id is four length integer number
     if (regex_match(id, reg))
     {
         return id;               // if it is, return type 1;
@@ -230,6 +230,7 @@ information utils::register_form()
             {
                 if(go_nogo == "Y" || go_nogo == "y")
                 {
+                    id = temp;
                     id_checker = false;
                     break;
                 }
@@ -250,7 +251,7 @@ information utils::register_form()
     cout << "Enter school of element: ";
     cin >> school;
 
-    information info(name, temp, school);     // define new information instance
+    information info(name, id, school);     // define new information instance
 
     cout << "New element [" + info.get_name() + ", " + info.get_id() + ", " + info.get_school() + "] is inserted." << endl;
 
