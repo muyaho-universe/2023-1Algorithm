@@ -290,19 +290,47 @@ int main()
         switch (menu[0])
         {
         case 'I':
-            queue.insert(util.register_form());
+            if (queue.is_full())
+            {
+                cout << "Queue is full." << endl;
+            }
+            else
+            {
+                queue.insert(util.register_form());
+            }
             break;
 
         case 'D':
-            cout << "D" << endl;
+            if (queue.is_empty())
+            {
+                cout << "Queue is empty." << endl;
+            }
+            else
+            {
+                cout << "D" << endl;
+            } 
             break;
             
         case 'C':
-            cout << "C" << endl;
+            if (queue.is_empty())
+            {
+                cout << "Queue is empty." << endl;
+            }
+            else
+            {
+                cout << "D" << endl;
+            } 
             break;
 
         case 'P':
-            queue.print_queue();
+            if(queue.is_empty())
+            {
+                cout << "Queue is empty." << endl;
+            }
+            else
+            {
+                queue.print_queue();
+            }
             break;
         case 'Q':
             cout << "Q" << endl;
