@@ -4,7 +4,8 @@
 
 using namespace std;
 
-#define MAX_HEAP_SIZE 30
+#define MAX_HEAP_SIZE 31        // index 0 in queue will be left empty for null saftety
+                                // heap will start from 1, so its size is fixed at 30
 
 //define class for elements.
 class information
@@ -307,7 +308,8 @@ int main()
             }
             else
             {
-                cout << "D" << endl;
+                information info = queue.delete_first();
+                cout << "[" + info.get_name() + ", " + info.get_id() + ", "+ info.get_school() +"]" << endl;
             } 
             break;
             
