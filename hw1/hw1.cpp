@@ -123,6 +123,7 @@ public :
     information delete_first();
     bool is_full();
     bool is_empty();
+    information minimum();
 };
 
 /**
@@ -146,7 +147,7 @@ int min_priority_queue::get_queue_length()
 
 /**
  * @brief insert the information in queue by following mininum heap
- * 
+ * INSERT(S, x) : inserts element x into set S.
  * @param info 
  */
 void min_priority_queue::insert(information info)   // applying heap concept here
@@ -209,9 +210,19 @@ void min_priority_queue::adjust(int t_root)
 }
 
 /**
+ * @brief returns element of S with smallest key
+ * it is MINIMUN(S)
+ * @return information 
+ */
+information min_priority_queue::minimum()
+{
+    return q[1];
+}
+
+/**
  * @brief it returns the first element in the heap. after it, it finds what should be at the root of not only the whole tree, but also the all the subtrees
  * 
- * 
+ * it is EXTRACT-MIN(S)
  * @return information 
  */
 information min_priority_queue::delete_first()
@@ -219,7 +230,7 @@ information min_priority_queue::delete_first()
     information t;
     information tmp;
     int parent, child;
-    t = q[1];           // for return value
+    t = minimum();           // for return value
     tmp = q[queue_length]; // last element
     queue_length--;
     parent = 1;         // root
@@ -436,7 +447,7 @@ int utils::get_index(int len)
 
 /**
  * @brief it decreases the id of selected element
- * 
+ * DECREASE-KEY(S, x, k) : decreases value of element x's key to k.
  * @param index 
  */
 void min_priority_queue::edit_q(int index)
