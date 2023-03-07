@@ -8,32 +8,6 @@ using namespace std;
                                 // heap will start from 1, so its size is fixed at 30
 
 
-class index_and_id
-{
-    string id;
-    int index;
-public:
-    index_and_id(string i, int ind);
-    string get_id();
-    int get_index();
-};
-
-index_and_id::index_and_id(string i, int ind)
-{
-    id = i;
-    index = ind;
-}
-
-string index_and_id::get_id()
-{
-    return id;
-}
-
-int index_and_id::get_index()
-{
-    return index;
-}
-
 //define class for elements.
 class information
 {
@@ -105,7 +79,7 @@ public :
     int get_queue_length();
     void insert(information info);
     void print_queue();
-    void edit_q(index_and_id indid);
+    void edit_q(int index);
     information delete_first();
     bool is_full();
     bool is_empty();
@@ -146,13 +120,7 @@ void min_priority_queue::print_queue()
 
 void min_priority_queue::adjust(int t_root)
 {
-    
-}
 
-void min_priority_queue::edit_q(index_and_id indid)
-{
-    q[indid.get_index()].set_id(indid.get_id());
-    adjust(indid.get_index());
 }
 
 information min_priority_queue::delete_first()
@@ -195,12 +163,12 @@ bool min_priority_queue::is_empty()
 }
 
 class utils
-{
-    string id_validation_check(string id);
+{    
 public:
+    string id_validation_check(string id);
     void print_menu();              //
     information register_form();    //
-    index_and_id decrese_id(int len);               //
+    int get_index(int len);               //
 };
 
 void utils::print_menu()
@@ -312,12 +280,9 @@ information utils::register_form()
     return info;
 }
 
-index_and_id utils::decrese_id(int len)
+int utils::get_index(int len)
 {
     int index;
-    string temp;
-    string id;
-    bool id_checker = true;
 
     while (true)
     {
@@ -334,12 +299,23 @@ index_and_id utils::decrese_id(int len)
             cin.ignore();
         }
     }
+  
+    return index;
+}
+
+
+void min_priority_queue::edit_q(int index)
+{
+    string temp;
+    string id;
+    bool id_checker = true;
+    utils util;
 
     while (id_checker)
     {
         cout << "Enter id value: ";
         getline(cin, id);
-        temp = id_validation_check(id);
+        temp = util.id_validation_check(id);
         if (temp == "-1")
         {
             cout << "Wrong id format. Enter id again!" << endl;
@@ -353,8 +329,18 @@ index_and_id utils::decrese_id(int len)
             {
                 if(go_nogo == "Y" || go_nogo == "y")
                 {
-                    id = temp;
-                    id_checker = false;
+                    if(stoi(temp) > stoi(q[index].get_id()))
+                    {
+                        cout << "Id isn't decresead! Input it again." << endl;
+                        cin.ignore();
+                    }
+                    else
+                    {
+                        id = temp;
+                        id_checker = false;
+                        q[index].set_id(id);
+                        adjust(index);
+                    }
                     break;
                 }
                 if(go_nogo == "N" || go_nogo == "n")
@@ -370,9 +356,6 @@ index_and_id utils::decrese_id(int len)
             } while (true);
         }
     }
-
-    index_and_id indid(id, index);
-    return indid;
 }
 
 int main()
@@ -420,8 +403,8 @@ int main()
             }
             else
             {
-                index_and_id indid = util.decrese_id(queue.get_queue_length());
-                // queue.          
+                int index = util.get_index(queue.get_queue_length());
+                queue.edit_q(index);          
             } 
             break;
 
