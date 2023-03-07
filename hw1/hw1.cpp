@@ -14,6 +14,8 @@
  *           2. https://restudycafe.tistory.com/510 (input buffer issue),
  *           3. https://cryptosalamander.tistory.com/136 (get string with the space)
  * 
+ * I choose case 2
+ * it automatically converts 12 30, 123o, 123O, and 12_30 to 1230
  */
 #include <iostream>
 #include <regex>
