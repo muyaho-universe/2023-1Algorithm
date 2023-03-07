@@ -1,14 +1,37 @@
+/**
+ * @file hw1.cpp
+ * @author Daeseok Kim 21800059
+ * @brief This code is demonstrating min-prirority queue by using heap. By using id as key value, it automatically sort the values
+ * @version 0.1
+ * @date 2023-03-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ * 
+ * references
+ * (1) lecture materials: 1. Professor Hojoon Kim's "Data structure" homework # 12; it's about heap
+ * (2) Blog: 1. https://modoocode.com/303 (Regex), 
+ *           2. https://restudycafe.tistory.com/510 (input buffer issue),
+ *           3. https://cryptosalamander.tistory.com/136 (get string with the space)
+ * 
+ */
 #include <iostream>
 #include <regex>
 #include <string>
 
-using namespace std;
+using namespace std;            // using namespace not to repeat all the headers
 
 #define MAX_HEAP_SIZE 31        // index 0 in queue will be left empty for null saftety
                                 // heap will start from 1, so its size is fixed at 30
 
 
 //define class for elements.
+/**
+ * @brief keeping name, id, and school in one instance
+ * The fiels name, id, and school are encapsulated by defining it private.
+ * To aceess them, user must use getter and setter function
+ * Also, there are 2 constructor. One is for empty instance which will be used to recieve data. Another is for making instance 
+ */
 class information
 {
     string name;
@@ -25,6 +48,13 @@ public:
     string get_school();
 };
 
+/**
+ * @brief Construct a new information::information object
+ * 
+ * @param n for name
+ * @param i for id
+ * @param s for school
+ */
 information::information(string n, string i, string s)
 {
     name = n;
@@ -32,13 +62,19 @@ information::information(string n, string i, string s)
     school = s;
 }
 
+/**
+ * @brief Construct a new information::information object
+ * empty constructor
+ */
 information::information()
 {
     name = " ";
     id = " ";
     school = " ";
 }
-
+/*
+* following functions are getter and setter
+*/
 void information::set_name(string n)
 {
     name = n;
@@ -69,6 +105,10 @@ string information::get_school()
     return school;
 }
 
+/**
+ * @brief This class has heap to implement min-priority queue
+ * when constructor called, it initializes its queue
+ */
 class min_priority_queue
 {
     information q[MAX_HEAP_SIZE];
@@ -85,30 +125,48 @@ public :
     bool is_empty();
 };
 
+/**
+ * @brief Construct a new min priority queue::min priority queue object
+ * queue_length is 0
+ */
 min_priority_queue::min_priority_queue()
 {
     queue_length = 0;
 }
 
+/**
+ * @brief getter for queue length
+ * 
+ * @return int 
+ */
 int min_priority_queue::get_queue_length()
 {
     return queue_length;
 }
 
+/**
+ * @brief insert the information in queue by following mininum heap
+ * 
+ * @param info 
+ */
 void min_priority_queue::insert(information info)   // applying heap concept here
 {
     int i;
     queue_length++;
-    i = queue_length;
+    i = queue_length;       // first, it's placed at the last leaf position
 
-    while ((i != 1) && (stoi(info.get_id()) < stoi(q[i / 2].get_id())))
+    while ((i != 1) && (stoi(info.get_id()) < stoi(q[i / 2].get_id())))     // while position is not root and inserted id is less than its parent, keep swaping their position and its parent swaps with its child
     {
         q[i] = q[i / 2];
         i /= 2;
     }
-    q[i] = info;
+    q[i] = info;    // after quitting the loop, new information finds its place
 }
 
+/**
+ * @brief it prints all the instance in a queue
+ * 
+ */
 void min_priority_queue::print_queue()
 {
     for(int i = 1; i < queue_length + 1; i++)
@@ -118,6 +176,11 @@ void min_priority_queue::print_queue()
     cout << endl;
 }
 
+/**
+ * @brief it adjusts the decreased id. it searchs the above part of its tree and if the parent's id is larger than it, they swap
+ * 
+ * @param t_root 
+ */
 void min_priority_queue::adjust(int t_root)
 {
     int tmpkey;
@@ -145,6 +208,12 @@ void min_priority_queue::adjust(int t_root)
     q[t_root] = tmp;
 }
 
+/**
+ * @brief it returns the first element in the heap. after it, it finds what should be at the root of not only the whole tree, but also the all the subtrees
+ * 
+ * 
+ * @return information 
+ */
 information min_priority_queue::delete_first()
 {
     information t;
@@ -174,25 +243,45 @@ information min_priority_queue::delete_first()
     return t;
 }
 
+/**
+ * @brief Check wheter the queue is full
+ * 
+ * @return true 
+ * @return false 
+ */
 bool min_priority_queue::is_full()
 {
     return (queue_length == MAX_HEAP_SIZE - 1);
 }
 
+/**
+ * @brief Check wheter the queue is empty
+ * 
+ * @return true 
+ * @return false 
+ */
 bool min_priority_queue::is_empty()
 {
     return (queue_length == 0);
 }
 
+/**
+ * @brief this class contains several useful functions
+ * 
+ */
 class utils
 {    
 public:
     string id_validation_check(string id);
     void print_menu();              //
     information register_form();    //
-    int get_index(int len);               //
+    int get_index(int len);
 };
 
+/**
+ * @brief It prints all the menu
+ * 
+ */
 void utils::print_menu()
 {
     cout << "\n*********** MENU ***********" << endl;
@@ -204,6 +293,13 @@ void utils::print_menu()
     cout << "Choose menu: ";
 }
 
+/**
+ * @brief When user entered the id, this function evaluates id validation; 1) wheter id length is 4
+ *                                                                         2) wheter id has 4 digits number, not starting with 0
+ * 
+ * @param id 
+ * @return string if it is valid, it returns id value, or it returns -1
+ */
 string utils::id_validation_check(string id)
 {
     if (id.length() < 4)
@@ -211,7 +307,7 @@ string utils::id_validation_check(string id)
         return "-1";              // id length is less than 4. don't need to check the rest
     }
     
-    regex reg("[1-9]{1}\\d{4}");        // declare regular expression to check wheter id is four length integer number
+    regex reg("[1-9]{1}\\d{3}");        // declare regular expression to check wheter id is four length integer number
     if (regex_match(id, reg))
     {
         return id;               // if it is, return type 1;
@@ -242,6 +338,12 @@ string utils::id_validation_check(string id)
     }   
 }
 
+/**
+ * @brief it shows register form.
+ * 
+ * During getting the information from user, it calls id validation checker.
+ * @return information instace which has  name, id and, school
+ */
 information utils::register_form()
 {
     string name;
@@ -267,11 +369,11 @@ information utils::register_form()
         else
         {
             string go_nogo;
-            cout << "Are you sure to use id: " << temp << "? (Y/n) ";
+            cout << "Are you sure to use id: " << temp << "? (Y/n) ";       // it asks user wheter to use id.
             cin >> go_nogo;
             do
             {
-                if(go_nogo == "Y" || go_nogo == "y")
+                if(go_nogo == "Y" || go_nogo == "y")                        // it accepts capital and small 'y' and 'n'
                 {
                     id = temp;
                     id_checker = false;
@@ -302,6 +404,12 @@ information utils::register_form()
     return info;
 }
 
+/**
+ * @brief get index for decresing id
+ * if input index is out of bounds, it reject the input
+ * @param len 
+ * @return int 
+ */
 int utils::get_index(int len)
 {
     int index;
@@ -326,7 +434,11 @@ int utils::get_index(int len)
     return index;
 }
 
-
+/**
+ * @brief it decreases the id of selected element
+ * 
+ * @param index 
+ */
 void min_priority_queue::edit_q(int index)
 {
     string temp;
@@ -381,6 +493,12 @@ void min_priority_queue::edit_q(int index)
     }
 }
 
+/**
+ * @brief main function
+ * 
+ * it always checks queue state not to commit overflow or null exception
+ * @return int 
+ */
 int main()
 {
     min_priority_queue queue;
