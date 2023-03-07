@@ -7,6 +7,33 @@ using namespace std;
 #define MAX_HEAP_SIZE 31        // index 0 in queue will be left empty for null saftety
                                 // heap will start from 1, so its size is fixed at 30
 
+
+class index_and_id
+{
+    string id;
+    int index;
+public:
+    index_and_id(string i, int ind);
+    string get_id();
+    int get_index();
+};
+
+index_and_id::index_and_id(string i, int ind)
+{
+    id = i;
+    index = ind;
+}
+
+string index_and_id::get_id()
+{
+    return id;
+}
+
+int index_and_id::get_index()
+{
+    return index;
+}
+
 //define class for elements.
 class information
 {
@@ -78,6 +105,7 @@ public :
     int get_queue_length();
     void insert(information info);
     void print_queue();
+    void edit_q(index_and_id indid);
     information delete_first();
     bool is_full();
     bool is_empty();
@@ -114,6 +142,17 @@ void min_priority_queue::print_queue()
         cout << "["+ q[i].get_name() +", "+ q[i].get_id() + ", "+ q[i].get_school() +"] ";
     }
     cout << endl;
+}
+
+void min_priority_queue::adjust(int t_root)
+{
+    
+}
+
+void min_priority_queue::edit_q(index_and_id indid)
+{
+    q[indid.get_index()].set_id(indid.get_id());
+    adjust(indid.get_index());
 }
 
 information min_priority_queue::delete_first()
@@ -159,8 +198,9 @@ class utils
 {
     string id_validation_check(string id);
 public:
-    void print_menu();
-    information register_form();
+    void print_menu();              //
+    information register_form();    //
+    index_and_id decrese_id(int len);               //
 };
 
 void utils::print_menu()
@@ -272,8 +312,68 @@ information utils::register_form()
     return info;
 }
 
+index_and_id utils::decrese_id(int len)
+{
+    int index;
+    string temp;
+    string id;
+    bool id_checker = true;
 
+    while (true)
+    {
+        
+        cout << "Enter index of element: ";
+        cin >> index;
+        if (index + 1 <= len)
+        {
+            break;
+        }
+        else
+        {
+            cout << "Index out of bounds!" << endl;
+            cin.ignore();
+        }
+    }
 
+    while (id_checker)
+    {
+        cout << "Enter id value: ";
+        getline(cin, id);
+        temp = id_validation_check(id);
+        if (temp == "-1")
+        {
+            cout << "Wrong id format. Enter id again!" << endl;
+        }
+        else
+        {
+            string go_nogo;
+            cout << "Are you sure to use id: " << temp << "? (Y/n) ";
+            cin >> go_nogo;
+            do
+            {
+                if(go_nogo == "Y" || go_nogo == "y")
+                {
+                    id = temp;
+                    id_checker = false;
+                    break;
+                }
+                if(go_nogo == "N" || go_nogo == "n")
+                {
+                    cin.ignore();
+                    break;
+                }
+                else
+                {
+                    cout << "Type wheter use it or not (Y/n): ";
+                    cin >> go_nogo;
+                }
+            } while (true);
+        }
+    }
+
+    index_and_id indid(id, index);
+    return indid;
+}
 
 int main()
 {
@@ -283,7 +383,7 @@ int main()
     utils util;
     do
     {
-        information temp();
+        information temp;
         util.print_menu();
         cin >> menu;
         cin.clear();
@@ -309,7 +409,7 @@ int main()
             else
             {
                 information info = queue.delete_first();
-                cout << "[" + info.get_name() + ", " + info.get_id() + ", "+ info.get_school() +"]" << endl;
+                cout << "[" + info.get_name() + ", " + info.get_id() + ", "+ info.get_school() +"] is deleted." << endl;
             } 
             break;
             
@@ -320,7 +420,8 @@ int main()
             }
             else
             {
-                cout << "D" << endl;
+                index_and_id indid = util.decrese_id(queue.get_queue_length());
+                // queue.          
             } 
             break;
 
@@ -335,7 +436,6 @@ int main()
             }
             break;
         case 'Q':
-            cout << "Q" << endl;
             keep = false;
             break;
         default:
