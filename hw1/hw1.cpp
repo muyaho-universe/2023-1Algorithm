@@ -120,7 +120,29 @@ void min_priority_queue::print_queue()
 
 void min_priority_queue::adjust(int t_root)
 {
+    int tmpkey;
+    int parent;
+    information tmp;
 
+    tmp = q[t_root];
+    tmpkey = stoi(tmp.get_id());
+    parent = t_root / 2;
+
+    while (parent >= 1)
+    {
+        if(tmpkey > stoi(q[parent].get_id()))
+        {
+            break;
+        }
+        else
+        {
+            q[t_root] = q[parent];
+            t_root = parent;
+            parent /= 2;
+        }
+    }
+    
+    q[t_root] = tmp;
 }
 
 information min_priority_queue::delete_first()
@@ -174,7 +196,7 @@ public:
 void utils::print_menu()
 {
     cout << "\n*********** MENU ***********" << endl;
-    cout << "I : Isert new element into queue." << endl;
+    cout << "I : Insert new element into queue." << endl;
     cout << "D : Delete element with smallest key from queue." << endl;
     cout << "C : Decrease key of element in queue." << endl;
     cout << "P : Print out all elements in queue" << endl;
@@ -289,7 +311,8 @@ int utils::get_index(int len)
         
         cout << "Enter index of element: ";
         cin >> index;
-        if (index + 1 <= len)
+        cin.ignore();
+        if (index <= len)
         {
             break;
         }
